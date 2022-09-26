@@ -8,15 +8,16 @@ https://github.com/umee-network/umee#release-compatibility-matrix
 https://explorer.network.umee.cc/canon-1
 
 # 1. Install and sync umeed
-
 ### Install dependencies
-# Update if needed
+### Update if needed
+
 sudo apt update && sudo apt upgrade -y
 
 ### Insall packages
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu -y
 
 ### Install GO 1.18.5
+
 cd $HOME
 ver="1.18.5"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
