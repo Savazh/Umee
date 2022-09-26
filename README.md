@@ -4,7 +4,7 @@ https://mzonder.notion.site/UMEE-start-from-genesis-canon-1-8ac7abccfcd94d7d9743
 https://github.com/umee-network/testnets/tree/main/networks/canon-1
 https://github.com/umee-network/umee#release-compatibility-matrix
 
-Explorers
+# Explorers:
 https://explorer.network.umee.cc/canon-1
 
 # 1. Install and sync umeed
@@ -13,10 +13,10 @@ https://explorer.network.umee.cc/canon-1
 # Update if needed
 sudo apt update && sudo apt upgrade -y
 
-# Insall packages
+### Insall packages
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu -y
 
-# Install GO 1.18.5
+### Install GO 1.18.5
 cd $HOME
 ver="1.18.5"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
@@ -28,8 +28,8 @@ source $HOME/.bash_profile
 
 go version
 
-# OUTPUT 
-# go version go1.18.5 linux/amd64
+### OUTPUT 
+### go version go1.18.5 linux/amd64
 
 BUILD UMEE
 cd $HOME
@@ -39,13 +39,13 @@ git checkout v1.0.4
 make install
 
 umeed version
-# v1.0.4
+### v1.0.4
 
 INIT UMEE
-UMEE_CHAIN="canon-1"  # don't change
+UMEE_CHAIN="canon-1"  ### don't change
 
 UMEE_NODENAME="MZONDER"
-# UMEE_HOME="/mnt/disk1/.umee"
+### UMEE_HOME="/mnt/disk1/.umee"
 UMEE_HOME="$HOME/.umee"
 MAIN_WALLET="MAIN_WALLET"
 ORCH_WALLET="ORCH_WALLET"
