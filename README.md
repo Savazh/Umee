@@ -1,7 +1,7 @@
 # LINKS:
 https://mzonder.notion.site/UMEE-start-from-genesis-canon-1-8ac7abccfcd94d7d97431b0d1558bf8b
 # Github:
-https://github.com/umee-network/testnets/tree/main/networks/canon-1 &nbsp
+https://github.com/umee-network/testnets/tree/main/networks/canon-1
 https://github.com/umee-network/umee#release-compatibility-matrix
 
 # Explorers:
@@ -11,13 +11,13 @@ https://explorer.network.umee.cc/canon-1
 ### Install dependencies
 ### Update if needed
 
-sudo apt update && sudo apt upgrade -y
+```sudo apt update && sudo apt upgrade -y```
 
 ### Insall packages
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu -y
 
 ### Install GO 1.18.5
-
+```
 cd $HOME
 ver="1.18.5"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
@@ -26,18 +26,20 @@ sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
 rm "go$ver.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
-
+```
 go version
 
 ### OUTPUT 
 ### go version go1.18.5 linux/amd64
 
 BUILD UMEE
+```
 cd $HOME
 cd umee || { git clone https://github.com/umee-network/umee.git && cd umee; }
 git pull
 git checkout v1.0.4
 make install
+```
 
 umeed version
 ### v1.0.4
