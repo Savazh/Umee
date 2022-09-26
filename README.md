@@ -1,11 +1,10 @@
-# LINKS:
+## LINKS:
 https://mzonder.notion.site/UMEE-start-from-genesis-canon-1-8ac7abccfcd94d7d97431b0d1558bf8b
-# Github:
+## Github:
 https://github.com/umee-network/testnets/tree/main/networks/canon-1
 
 https://github.com/umee-network/umee#release-compatibility-matrix
-
-# Explorers:
+## Explorers:
 https://explorer.network.umee.cc/canon-1
 
 # 1. Install and sync umeed
@@ -64,43 +63,48 @@ export ORCH_WALLET=${ORCH_WALLET}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
-# init
-umeed init ${UMEE_NODENAME} --chain-id $UMEE_CHAIN --home $UMEE_HOME
+### init
+```umeed init ${UMEE_NODENAME} --chain-id $UMEE_CHAIN --home $UMEE_HOME```
 
-# genesis
-wget -O $UMEE_HOME/config/genesis.json "https://raw.githubusercontent.com/umee-network/testnets/main/networks/canon-1/genesis.json"
+### genesis
+```wget -O $UMEE_HOME/config/genesis.json "https://raw.githubusercontent.com/umee-network/testnets/main/networks/canon-1/genesis.json"```
 
-# reset
-umeed unsafe-reset-all --home $UMEE_HOME
+### reset
+```umeed unsafe-reset-all --home $UMEE_HOME```
 
-CONFIG UMEE
+## CONFIG UMEE
 
-# update peers
+### update peers
+```
 SEEDS=""
 PEERS="5e01b69ead6e0781af0361d3ec4e436d96dba932@35.215.98.106:26656"
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $UMEE_HOME/config/config.toml
+```
 
-# min_gas
-sed -i -e 's/^minimum-gas-prices *=.*/minimum-gas-prices = "0.001uumee"/' $UMEE_HOME/config/app.toml
+### min_gas
+```sed -i -e 's/^minimum-gas-prices *=.*/minimum-gas-prices = "0.001uumee"/' $UMEE_HOME/config/app.toml```
 
-CONFIG PRUNING AND SNAPSHOT (for validator nodes)
+## CONFIG PRUNING AND SNAPSHOT (for validator nodes)
 
-# config pruning
+### config pruning
+```
 pruning_keep_recent="20000"
 pruning_keep_every="0"
 pruning_interval="19"
-
+```
+```
 sed -i -e "s/^pruning *=.*/pruning = \"custom\"/;\
 s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/;\
 s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/;\
 s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $UMEE_HOME/config/app.toml
-
+```
 # for pruning "100-0-10" you should disable snapshots to avoid conflict with 100 blocks pruning and 1500 blocks snapshot-interval
 sed -i 's/snapshot-interval *=.*/snapshot-interval = 1000/' $UMEE_HOME/config/app.toml
 
-CREATE AND RUN SERVICE
+## CREATE AND RUN SERVICE
 
-# create service
+### create service
+```
 tee $HOME/umeed.service > /dev/null <<EOF
 [Unit]
   Description=Umee
@@ -120,18 +124,22 @@ sudo mv $HOME/umeed.service /etc/systemd/system/
 sudo systemctl enable umeed
 sudo systemctl daemon-reload
 sudo systemctl start umeed && journalctl -u umeed -f -o cat
+```
 
-CREATE NEW KEY (or recover old one)
+## CREATE NEW KEY (or recover old one)
 
-# create new key
+### create new key
+```
 umeed keys add $MAIN_WALLET --home $UMEE_HOME
 umeed keys add $ORCH_WALLET --home $UMEE_HOME
+```
 
 
 # !!!! SAVE MNEMONICs FROM OUTPUT !!!!
 
 
-# save addrs and valoper to vars (optional)
+### save addrs and valoper to vars (optional)
+```
 MAIN_ADDR=$(umeed keys show $MAIN_WALLET -a --home $UMEE_HOME)
 echo $MAIN_ADDR
 echo 'export MAIN_ADDR='${MAIN_ADDR} >> $HOME/.bash_profile
@@ -146,25 +154,27 @@ echo $UMEE_VALOPER
 echo 'export UMEE_VALOPER='${UMEE_VALOPER} >> $HOME/.bash_profile
 
 source $HOME/.bash_profile
+```
 
-**Syncing steps:**
+### **Syncing steps:**
 
 Governance UPGRADE at block 339357
 
 UPDATE UMEED
 
-# stop
-sudo systemctl stop umeed
+### stop
+```sudo systemctl stop umeed```
 
-# build
+### build
+```
 cd $HOME/umee
 git pull
 git checkout v1.1.2
 make build
 
 mv $HOME/umee/build/umeed $(which umeed)
-
-# continue from 339357
+```
+### continue from 339357
 sudo systemctl start umeed && journalctl -u umeed -f -o cat
 
 # set halt-height = 416813
