@@ -1,7 +1,7 @@
 # LINKS:
 https://mzonder.notion.site/UMEE-start-from-genesis-canon-1-8ac7abccfcd94d7d97431b0d1558bf8b
 # Github:
-https://github.com/umee-network/testnets/tree/main/networks/canon-1
+https://github.com/umee-network/testnets/tree/main/networks/canon-1,
 https://github.com/umee-network/umee#release-compatibility-matrix
 
 # Explorers:
@@ -14,7 +14,9 @@ https://explorer.network.umee.cc/canon-1
 ```sudo apt update && sudo apt upgrade -y```
 
 ### Insall packages
+```
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu -y
+```
 
 ### Install GO 1.18.5
 ```
