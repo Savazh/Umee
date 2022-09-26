@@ -29,25 +29,27 @@ sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
 rm "go$ver.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
-```
+
 go version
+```
 
 ### OUTPUT 
 ### go version go1.18.5 linux/amd64
 
-BUILD UMEE
+##BUILD UMEE
 ```
 cd $HOME
 cd umee || { git clone https://github.com/umee-network/umee.git && cd umee; }
 git pull
 git checkout v1.0.4
 make install
-```
 
 umeed version
 ### v1.0.4
+```
 
-INIT UMEE
+##INIT UMEE
+```
 UMEE_CHAIN="canon-1"  ### don't change
 
 UMEE_NODENAME="MZONDER"
@@ -63,6 +65,7 @@ export MAIN_WALLET=${MAIN_WALLET}
 export ORCH_WALLET=${ORCH_WALLET}" >> $HOME/.bash_profile
 
 source $HOME/.bash_profile
+```
 
 # init
 umeed init ${UMEE_NODENAME} --chain-id $UMEE_CHAIN --home $UMEE_HOME
