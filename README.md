@@ -1,7 +1,7 @@
 # LINKS:
 https://mzonder.notion.site/UMEE-start-from-genesis-canon-1-8ac7abccfcd94d7d97431b0d1558bf8b
 # Github:
-https://github.com/umee-network/testnets/tree/main/networks/canon-1
+https://github.com/umee-network/testnets/tree/main/networks/canon-1 &nbsp
 https://github.com/umee-network/umee#release-compatibility-matrix
 
 # Explorers:
