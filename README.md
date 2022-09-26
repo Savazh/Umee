@@ -99,7 +99,7 @@ s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/;\
 s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $UMEE_HOME/config/app.toml
 ```
 ### for pruning "100-0-10" you should disable snapshots to avoid conflict with 100 blocks pruning and 1500 blocks snapshot-interval
-sed -i 's/snapshot-interval *=.*/snapshot-interval = 1000/' $UMEE_HOME/config/app.toml
+```sed -i 's/snapshot-interval *=.*/snapshot-interval = 1000/' $UMEE_HOME/config/app.toml```
 
 ## CREATE AND RUN SERVICE
 
@@ -418,6 +418,7 @@ GRPC_PORT="9090"
 
 ### check vars
 ```echo $UMEE_CHAIN, $UMEE_VALOPER, $MAIN_ADDR, $KEYRING, $KEYRING_PASSWORD, $RPC_PORT, $GRPC_PORT | tr "," "\n" | nl ```
+
  output 7 lines
 
 ### create config
