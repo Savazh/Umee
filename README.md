@@ -98,7 +98,7 @@ s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/;\
 s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/;\
 s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $UMEE_HOME/config/app.toml
 ```
-# for pruning "100-0-10" you should disable snapshots to avoid conflict with 100 blocks pruning and 1500 blocks snapshot-interval
+### for pruning "100-0-10" you should disable snapshots to avoid conflict with 100 blocks pruning and 1500 blocks snapshot-interval
 sed -i 's/snapshot-interval *=.*/snapshot-interval = 1000/' $UMEE_HOME/config/app.toml
 
 ## CREATE AND RUN SERVICE
@@ -175,23 +175,24 @@ make build
 mv $HOME/umee/build/umeed $(which umeed)
 ```
 ### continue from 339357
-sudo systemctl start umeed && journalctl -u umeed -f -o cat
+```sudo systemctl start umeed && journalctl -u umeed -f -o cat```
 
-# set halt-height = 416813
+### set halt-height = 416813
 
-# continue from 398928
-sudo systemctl start umeed && journalctl -u umeed -f -o cat
+### continue from 398928
+```sudo systemctl start umeed && journalctl -u umeed -f -o cat```
 
-do 'umeed rollback' if CONSENSUS FAILURE (occured on block 400450)
+do ```umeed rollback``` if CONSENSUS FAILURE (occured on block 400450)
 
-## Halt-heighted UPGRADE at block 416813
+### Halt-heighted UPGRADE at block 416813
 
-UPDATE UMEED
+## UPDATE UMEED
 
-# stop
-sudo systemctl stop umeed
+### stop
+```sudo systemctl stop umeed```
 
-# build
+#### build
+```
 cd $HOME/umee
 git pull
 git checkout v3.0.0-rc2
@@ -200,21 +201,23 @@ make build
 mv $HOME/umee/build/umeed $(which umeed)
 
 umeed version
-# HEAD-7c5df71062a9b9f56342a07a15e087cee9a40128
+### HEAD-7c5df71062a9b9f56342a07a15e087cee9a40128
+```
 
 set halt-height = 421777
 
-# continue from 416814
-sudo systemctl start umeed && journalctl -u umeed -f -o cat
+### continue from 416814
+```sudo systemctl start umeed && journalctl -u umeed -f -o cat```
 
-## Halt-heighted UPGRADE at block `421777`
+### Halt-heighted UPGRADE at block `421777`
 
-UPDATE UMEED
+## UPDATE UMEED
 
-# stop
-sudo systemctl stop umeed
+### stop
+```sudo systemctl stop umeed```
 
-# build
+### build
+```
 cd $HOME/umee
 git pull
 git checkout v3.0.0-rc3
@@ -224,27 +227,29 @@ mv $HOME/umee/build/umeed $(which umeed)
 
 umeed version
 # HEAD-421da96607b66302c75feedc2e40092e70f2e10c
+```
 
 set halt-height = 0
 
-# continue from 421777
-sudo systemctl start umeed && journalctl -u umeed -f -o cat
+### continue from 421777
+```sudo systemctl start umeed && journalctl -u umeed -f -o cat```
 
-WAIT FOR SYNC
+## WAIT FOR SYNC
 
-# Before continue make sure you are fully synced with the network
-umeed status 2>&1 | jq
+### Before continue make sure you are fully synced with the network
+```umeed status 2>&1 | jq```
 
-2. CREATE VALIDATOR
+# 2. CREATE VALIDATOR
 
-# check balance
-umeed q bank balances $MAIN_ADDR --home $UMEE_HOME
+### check balance
+```umeed q bank balances $MAIN_ADDR --home $UMEE_HOME```
 
-# check vars
-echo $UMEE_NODENAME,$UMEE_CHAIN,$MAIN_WALLET,$UMEE_HOME | tr "," "\n" | nl 
-# = 4 lines
+### check vars
+```echo $UMEE_NODENAME,$UMEE_CHAIN,$MAIN_WALLET,$UMEE_HOME | tr "," "\n" | nl ```
+ = 4 lines
 
-# send tx
+### send tx
+```
 umeed tx staking create-validator \
   --amount 50000000uumee \
   --pubkey `umeed tendermint show-validator` \
@@ -258,9 +263,10 @@ umeed tx staking create-validator \
   --gas 300000 \
   --fees 1000uumee \
   --home $UMEE_HOME
+```
 
-# check validator
-umeed q staking validator $UMEE_VALOPER --home $UMEE_HOME
+### check validator
+```umeed q staking validator $UMEE_VALOPER --home $UMEE_HOME```
 
 
 
@@ -268,7 +274,8 @@ umeed q staking validator $UMEE_VALOPER --home $UMEE_HOME
 
 
 
-# output active set
+### output active set
+```
 umeed q staking validators --limit 1000 -oj --home $UMEE_HOME \
  | jq -r '.validators[] | select(.status=="BOND_STATUS_BONDED") | [(.tokens|tonumber / pow(10;6)), .description.moniker] | @csv' \
  | column -t -s"," | tr -d '"'| sort -k1 -n -r | nl
@@ -276,13 +283,14 @@ umeed q staking validators --limit 1000 -oj --home $UMEE_HOME \
 umeed q staking validators --limit 1000 -oj --home $UMEE_HOME \
  | jq -r '.validators[] | [(.tokens|tonumber / pow(10;6)), .description.moniker, .operator_address, .status, .jailed] | @csv' \
  | column -t -s"," | tr -d '"'| sort -k1 -n -r | nl
+ ```
 
 
-# edit if needed 931A47B46A0D32AA 
-umeed tx staking edit-validator --identity "YOU_KEY_BASE" --moniker $UMEE_NODENAME --from $MAIN_WALLET --home $UMEE_HOME
+### edit if needed 931A47B46A0D32AA 
+```umeed tx staking edit-validator --identity "YOU_KEY_BASE" --moniker $UMEE_NODENAME --from $MAIN_WALLET --home $UMEE_HOME```
 
-3. INSTALL PEGGO
-
+# 3. INSTALL PEGGO
+```
 cd $HOME
 cd peggo || { git clone https://github.com/umee-network/peggo.git && cd peggo; }
 git pull
@@ -295,21 +303,22 @@ peggo version
 # commit: b22361c4821dceb9d1a67d42be4b344fefef5eca
 # sdk: v0.46.0-umee.0.20220812010629-4d5bb2e3f73c
 # go: go1.18.3 linux/amd64
+```
 
-# fund orchestrator wallet
-umeed tx bank send $MAIN_ADDR $ORCH_ADDR 1000000uumee --chain-id $UMEE_CHAIN --fees 200uumee --home $UMEE_HOME
-
-
-# FUND ETH addr
+### fund orchestrator wallet
+```umeed tx bank send $MAIN_ADDR $ORCH_ADDR 1000000uumee --chain-id $UMEE_CHAIN --fees 200uumee --home $UMEE_HOME```
 
 
-# Set up your variables
-#                 START_HEIGHT="14211966"          
-#                 --bridge-start-height=\"$START_HEIGHT\" \
+## FUND ETH addr
 
-BRIDGE_ADDR="0xa22344153e826580e679712648e487Dc6032fB4d"                          # don't change!  Umee Testnet canon-1 Gravity Address 0xa22344153e826580e679712648e487Dc6032fB4d
 
-PEGGO_ETH_PK="78bcffxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # Private key of PEGGO_ETH_ADDR (0x7d318xxxxxxxxxxxxxxxxxxxxxxxxxxxx)
+## Set up your variables
+###                 START_HEIGHT="14211966"          
+###                --bridge-start-height=\"$START_HEIGHT\" \
+```
+BRIDGE_ADDR="0xa22344153e826580e679712648e487Dc6032fB4d"                          ## don't change!  Umee Testnet canon-1 Gravity Address 0xa22344153e826580e679712648e487Dc6032fB4d
+
+PEGGO_ETH_PK="78bcffxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ## Private key of PEGGO_ETH_ADDR (0x7d318xxxxxxxxxxxxxxxxxxxxxxxxxxxx)
 ETH_RPC="https://goerli.infura.io/v3/xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ALCHEMY_ENDPOINT="wss://eth-goerli.g.alchemy.com/v2/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
@@ -317,8 +326,9 @@ ORCHESTRATOR_WALLET_NAME="ORCH_WALLET"
 KEYRING_PASSWORD="xxxxxxxxxxxxxx"
 
 KEYRING="os"
-
-# create service
+```
+## create service
+```
 tee $HOME/peggod.service > /dev/null <<EOF
 Description=Peggo Service
 After=network.target
@@ -351,9 +361,10 @@ sudo mv $HOME/peggod.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable peggod
 sudo systemctl start peggod && journalctl -u peggod -f -o cat
+```
 
-4. REGISTER ORCHESTRATOR KEYS
-
+# 4. REGISTER ORCHESTRATOR KEYS
+```
 # your ETH addr
 PEGGO_ETH_ADDR="0x7d318xxxxxxxxxxxxxxxxxxxxxxxxxx"
 echo 'export PEGGO_ETH_ADDR='${PEGGO_ETH_ADDR} >> $HOME/.bash_profile
@@ -363,14 +374,15 @@ echo $UMEE_VALOPER,$ORCH_ADDR,$PEGGO_ETH_ADDR,$MAIN_WALLET,$UMEE_CHAIN,$UMEE_HOM
 # 6 lines
 
 umeed tx gravity set-orchestrator-address $UMEE_VALOPER $ORCH_ADDR $PEGGO_ETH_ADDR --from $MAIN_WALLET --chain-id $UMEE_CHAIN  --gas 600000 --fees=6000000uumee --home $UMEE_HOME
+```
 
-# check peggo
-sudo systemctl restart peggod && journalctl -u peggod -f -o cat
+## check peggo
+```sudo systemctl restart peggod && journalctl -u peggod -f -o cat```
 
-5. INSTALL PRICE-FEEDER
+# 5. INSTALL PRICE-FEEDER
 
 ### build price-feeder
-
+```
 cd $HOME/umee/price-feeder
 git pull
 git checkout price-feeder/v1.0.0
@@ -382,14 +394,17 @@ price-feeder version
 # commit: ae66523e0521fe2e2f37175973d09033097a5a91
 # sdk: v0.46.1-umee
 # go: go1.18.3 linux/amd64
+```
 
-CONFIG PRICE-FEEDER
+## CONFIG PRICE-FEEDER
 
 # remove old config
+```
 rm -rf $HOME/price-feeder_config
 mkdir -p $HOME/price-feeder_config
-
-# set vars
+```
+### set vars
+```
 UMEE_CHAIN="canon-1"
 UMEE_VALOPER="umeevaloper1....."
 MAIN_ADDR="umee1...validator_addr"
@@ -399,12 +414,14 @@ KEYRING_PASSWORD="xxxxxxxxxx"
 
 RPC_PORT="26657"
 GRPC_PORT="9090"
+```
 
-# check vars
-echo $UMEE_CHAIN, $UMEE_VALOPER, $MAIN_ADDR, $KEYRING, $KEYRING_PASSWORD, $RPC_PORT, $GRPC_PORT | tr "," "\n" | nl 
-# output 7 lines
+### check vars
+```echo $UMEE_CHAIN, $UMEE_VALOPER, $MAIN_ADDR, $KEYRING, $KEYRING_PASSWORD, $RPC_PORT, $GRPC_PORT | tr "," "\n" | nl ```
+ output 7 lines
 
-# create config
+### create config
+```
 tee $HOME/price-feeder_config/price-feeder.toml > /dev/null <<EOF
 gas_adjustment = 1
 
@@ -494,8 +511,10 @@ name = "binance"
 rest = "https://api1.binance.com"
 websocket = "stream.binance.com:9443"
 EOF
+```
 
-# create service
+### create service
+```
 echo "[Unit]
 Description=Price feeder service
 After=network.target
@@ -518,7 +537,7 @@ START PRICE-FEEDER
 sudo systemctl daemon-reload
 sudo systemctl enable pfd
 sudo systemctl start pfd && journalctl -u pfd -f -o cat
-
+```
 
 
 https://mzonder.notion.site/UMEE-start-from-genesis-canon-1-8ac7abccfcd94d7d97431b0d1558bf8b
